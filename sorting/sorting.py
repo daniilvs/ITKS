@@ -58,8 +58,8 @@ class Sort:
             mid = size // 2
             left = self[:mid]
             right = self[mid:]
-            left.merge()
-            right.merge()
+            Sort.merge(left)
+            Sort.merge(right)
             i = j = k = 0
             while i < len(left) and j < len(right):
                 if left[i] <= right[j]:
@@ -78,3 +78,33 @@ class Sort:
                 j += 1
                 k += 1
         return self
+
+    def __heapify(self: list, size, root):
+        largest = root
+        left = 2 * root + 1
+        right = 2 * root + 2
+        if left < size and self[root] < self[left]:
+            largest = left
+        if right < size and self[largest] < self[right]:
+            largest = right
+        if largest != root:
+            self[root], self[largest] = self[largest], self[root]
+            Sort.__heapify(self, size, largest)
+
+    def heap(self: list) -> list:
+        size = len(self)
+        for i in range(size // 2, -1, -1):
+            Sort.__heapify(self, size, i)
+        for i in range(size - 1, 0, -1):
+            self[i], self[0] = self[0], self[i]
+            Sort.__heapify(self, i, 0)
+        return self
+
+    def quick(self: list):
+        if len(self) <= 1:
+            return self
+        else:
+            pivot = self[0]
+            left = [x for x in self[1:] if x < pivot]
+            right = [x for x in self[1:] if x >= pivot]
+            return Sort.quick(left) + [pivot] + Sort.quick(right)
