@@ -4,9 +4,9 @@ import numpy as np
 NUMBER_OF_ITERS = {
     100: 1000,
     1000: 1000,
-    # 10000: 100,
-    # 100000: 100,
-    # 1000000: 10
+    10000: 100,
+    100000: 100,
+    1000000: 10
 }
 
 SIZE_OF_ARRAY = list(NUMBER_OF_ITERS.keys())
@@ -167,9 +167,14 @@ def time_of_sort(sorting_algorithm):
             end_time = time.time() - start_time
             clocks.append(end_time)
         average_clocks[n] = sum(clocks) / NUMBER_OF_ITERS[n]
-    print(average_clocks)
+    print(f"{sorting_algorithm}: {average_clocks}")
 
 
 if __name__ == '__main__':
-    print(quick(create(10, True)))
+    time_of_sort(insertion)
+    time_of_sort(selection)
+    time_of_sort(merge)
+    time_of_sort(heap)
     time_of_sort(quick)
+    time_of_sort(radix)
+
