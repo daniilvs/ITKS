@@ -1,9 +1,13 @@
-class Stack():
+class Stack:
     def __init__(self):
         self.stack = []
+        self.top = len(self.stack) - 1
 
     def push(self, element):
-        self.stack[0] = element
+        self.stack.append(element)
 
     def pop(self, element):
-        return self.stack.pop(0)
+        if len(self.stack) == 0:
+            return "underflow"
+        else:
+            return self.stack.pop()
