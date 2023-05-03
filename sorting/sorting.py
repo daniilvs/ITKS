@@ -147,21 +147,22 @@ def radix(arr: list) -> list:
     return arr
 
 
-def create(number, percent_of_sorted=0):
-    if percent_of_sorted != 0:
-        almost = number - number // 10
-        presorted = quick(list(np.random.sample(almost)))
-        return list(np.random.sample(number // 10)).append(presorted)
+def create(number, percent_of_sorted=0.0):
+    if percent_of_sorted > 0 and number > 1:
+        almost = int(number * percent_of_sorted)
+        presorted = sorted(list(np.random.sample(almost)))
+        presorted.extend(list(np.random.sample(number - almost)))
+        return presorted
     else:
         return list(np.random.sample(number))
 
 
-def time_of_sort(sorting_algorithm):
+def time_of_sort(sorting_algorithm, presorted=0.0):
     average_clocks = CLOCKS.copy()
     for n in SIZE_OF_ARRAY:
         clocks = []
         for i in range(NUMBER_OF_ITERS[n]):
-            arr = create(n)
+            arr = create(n, presorted)
             start_time = time.time()
             sorting_algorithm(arr)
             end_time = time.time() - start_time
@@ -177,4 +178,6 @@ if __name__ == '__main__':
     time_of_sort(heap)
     time_of_sort(quick)
     time_of_sort(radix)
+    time_of_sort(quick)
+    time_of_sort(quick, 0.9)
 
