@@ -136,7 +136,6 @@ def counting(arr, exp1):
     i = 0
     for i in range(0, len(arr)):
         arr[i] = output[i]
-    return arr
 
 
 def radix(arr: list) -> list:
@@ -151,11 +150,11 @@ def radix(arr: list) -> list:
 def create(number, percent_of_sorted=0.0):
     if percent_of_sorted > 0 and number > 1:
         almost = int(number * percent_of_sorted)
-        presorted = sorted(list(np.random.sample(almost)))
-        presorted.extend(list(np.random.sample(number - almost)))
+        presorted = sorted((np.random.sample(almost)).toList())
+        presorted.extend(np.random.sample((number - almost), ).toList())
         return presorted
     else:
-        return list(np.random.sample(number))
+        return np.random.sample(number).toList()
 
 
 def time_of_sort(sorting_algorithm, presorted=0.0):
