@@ -10,6 +10,6 @@ class Queue:
 
     def dequeue(self):
         if len(self.queue) == 0:
-            return "underflow"
+            raise Exception("Queue is empty")
         else:
             return self.queue.popleft()

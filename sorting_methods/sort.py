@@ -147,10 +147,10 @@ def radix(arr: list) -> list:
     return arr
 
 
-def create(number, percent_of_sorted=0.0):
-    if percent_of_sorted > 0 and number > 1:
-        almost = int(number * percent_of_sorted)
-        presorted = sorted((np.random.sample(almost)).toList())
+def create(number, presorted=0.0):
+    if presorted > 0 and number > 1:
+        almost = int(number * presorted)
+        presorted = sorted((np.random.sample(almost, )).toList())
         presorted.extend(np.random.sample((number - almost), ).toList())
         return presorted
     else:

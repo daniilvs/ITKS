@@ -7,7 +7,7 @@ class Stack:
 
     def pop(self):
         if len(self.stack) == 0:
-            return "underflow"
+            raise Exception("Stack is empty")
         else:
             return self.stack.pop()
 
@@ -26,4 +26,3 @@ if __name__ == "__main__":
     print(a.pop())
     print(a.top())
     print(a.stack)
-
