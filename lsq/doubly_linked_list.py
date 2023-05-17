@@ -1,51 +1,54 @@
 from collections import deque
 
 
-class _Node:
+class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
         self.prev = None
 
     def __repr__(self):
-        return self.data
+        return str(self.data)
 
 
 class DoublyLinkedList:
-    def __init__(self, nodes_data: deque = None):
-        self._nil = _Node('nil')
+    def __init__(self, *nodes_data):
+        deq = deque(nodes_data)
+        self._nil = Node(None)
         self._nil.next = self._nil
         self._nil.prev = self._nil
         try:
-            nodes_data.popleft()
+            self.head = Node(deq.popleft())
         except AttributeError or IndexError:
             self.head = self._nil
         else:
-            node = _Node(nodes_data.popleft())
-            self.head = node
-            for elem in nodes_data:
-                node.next = _Node(elem)
-                node.prev = node
-                node = node.next
-            node.next = self._nil
-            self._nil.prev = node
+            second_node = Node(deq.popleft())
+            self.head.next = second_node
+            second_node.prev = self.head
+            for elem in deq:
+                next_node = Node(elem)
+                second_node.next = next_node
+                next_node.prev = second_node
+                second_node = next_node
+            second_node.next = self._nil
+            self._nil.prev = second_node
             self.head.prev = self._nil
             self._nil.next = self.head
 
     def __repr__(self):
         node = self.head
         nodes = []
-        if node.data == 'nil':
+        if node.data is None:
             return "List is empty"
 
-        while node.data != 'nil':
-            nodes.append(node.data)
+        while node.data is not None:
+            nodes.append(str(node.data))
             node = node.next
         return " <-> ".join(nodes)
 
     def __iter__(self):
         node = self.head
-        while node is not None:
+        while node.data is not None:
             yield node
             node = node.next
 
@@ -55,7 +58,30 @@ class DoublyLinkedList:
             length += 1
         return length
 
+    def remove(self, node_to_remove):
+        if self.head is None:
+            raise Exception("List is empty")
+
+        else:
+            for node in self:
+                if node.data == node_to_remove:
+                    node.prev.next = node.next
+                    node.next.prev = node.prev
+                    return
+
+    def insert(self, node_data):
+        node = Node(node_data)
+        node.next = self.head
+        node.prev = self._nil
+        self.head = node
+        return
+
 
 if __name__ == "__main__":
-    linked = DoublyLinkedList(deque(['a', 'b', 'c', 'd']))
+    linked = DoublyLinkedList(deque([1, 2, 3, 4, 5]))
+
+    linked.remove(3)
+
+    linked.remove(5)
+
     print(linked)

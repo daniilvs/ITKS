@@ -1,7 +1,7 @@
 from collections import deque
 
 
-class _Node:
+class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
@@ -11,20 +11,21 @@ class _Node:
 
 
 class LinkedList:
-    def __init__(self, nodes_data: deque = None):
+    def __init__(self, *nodes_data):
         self.head = None
         if nodes_data is not None:
-            node = _Node(nodes_data.popleft())
+            deq = deque(nodes_data)
+            node = Node(deq.popleft())
             self.head = node
-            for elem in nodes_data:
-                node.next = _Node(elem)
+            for elem in deq:
+                node.next = Node(elem)
                 node = node.next
 
     def __repr__(self):
         node = self.head
         nodes = []
         while node is not None:
-            nodes.append(node.data)
+            nodes.append(str(node.data))
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
@@ -42,13 +43,13 @@ class LinkedList:
         return length
 
     def insert(self, node_data):
-        node = _Node(node_data)
+        node = Node(node_data)
         node.next = self.head
         self.head = node
         return
 
     def add_last(self, node_data):
-        node = _Node(node_data)
+        node = Node(node_data)
         if self.head is None:
             self.head = node
             return
@@ -68,7 +69,7 @@ class LinkedList:
         prev_node = self.head
         for node in self:
             if node.data == before:
-                new_node = _Node(new_node_data)
+                new_node = Node(new_node_data)
                 prev_node.next = new_node
                 new_node.next = node
                 return
@@ -80,7 +81,7 @@ class LinkedList:
 
         for node in self:
             if node.data == after:
-                new_node = _Node(new_node_data)
+                new_node = Node(new_node_data)
                 new_node.next = node.next
                 node.next = new_node
                 return
@@ -102,7 +103,7 @@ class LinkedList:
 
 
 if __name__ == "__main__":
-    linked = LinkedList(deque(['a', 'b', 'c']))
+    linked = LinkedList(1, 2, 3)
     print(linked)
 
     linked.insert('first')
@@ -124,3 +125,4 @@ if __name__ == "__main__":
     print(linked)
 
     print(len(linked))
+
