@@ -6,8 +6,8 @@ NUMBER_OF_ITERS = {
     100: 1000,
     1000: 1000,
     10000: 100,
-    100000: 100,
-    1000000: 10
+    # 100000: 100,
+    # 1000000: 10
 }
 
 SIZE_OF_ARRAY = list(NUMBER_OF_ITERS.keys())
@@ -16,8 +16,8 @@ CLOCKS = {
     100: 0.0,
     1000: 0.0,
     10000: 0.0,
-    100000: 0.0,
-    1000000: 0.0
+    # 100000: 0.0,
+    # 1000000: 0.0
 }
 
 
@@ -118,56 +118,56 @@ def quick(arr: list) -> list:
         return quick(left) + [pivot] + quick(right)
 
 
-def counting(arr, exp1):
-    n = len(arr)
-    output = [0] * n
-    count = [0] * 10
-    for i in range(0, n):
-        index = arr[i] // exp1
-        count[index % 10] += 1
-    for i in range(1, 10):
-        count[i] += count[i - 1]
-    i = n - 1
-    while i >= 0:
-        index = arr[i] // exp1
-        output[count[index % 10] - 1] = arr[i]
-        count[index % 10] -= 1
-        i -= 1
-    i = 0
-    for i in range(0, len(arr)):
-        arr[i] = output[i]
-
-
-def radix(arr: list) -> list:
-    max1 = max(arr)
-    exp = 1
-    while max1 / exp >= 1:
-        counting(arr, exp)
-        exp *= 10
-    return arr
+# def counting(arr, exp1):
+#     n = len(arr)
+#     output = [0] * n
+#     count = [0] * 10
+#     for i in range(0, n):
+#         index = arr[i] // exp1
+#         count[index % 10] += 1
+#     for i in range(1, 10):
+#         count[i] += count[i - 1]
+#     i = n - 1
+#     while i >= 0:
+#         index = arr[i] // exp1
+#         output[count[index % 10] - 1] = arr[i]
+#         count[index % 10] -= 1
+#         i -= 1
+#     i = 0
+#     for i in range(0, len(arr)):
+#         arr[i] = output[i]
+#
+#
+# def radix(arr: list) -> list:
+#     max1 = max(arr)
+#     exp = 1
+#     while max1 / exp >= 1:
+#         counting(arr, exp)
+#         exp *= 10
+#     return arr
 
 
 def create(number, presorted=0.0):
     if presorted > 0 and number > 1:
         almost = int(number * presorted)
-        presorted = sorted((np.random.sample(almost, )).toList())
-        presorted.extend(np.random.sample((number - almost), ).toList())
+        presorted = sorted((np.random.sample(almost, )).tolist())
+        presorted.extend(np.random.sample((number - almost), ).tolist())
         return presorted
     else:
-        return np.random.sample(number).toList()
+        return np.random.sample(number).tolist()
 
 
 def time_of_sort(sorting_algorithm, presorted=0.0):
     average_clocks = CLOCKS.copy()
     for n in SIZE_OF_ARRAY:
-        clocks = []
+        clocks = 0.0
         for i in range(NUMBER_OF_ITERS[n]):
             arr = create(n, presorted)
             start_time = time.time()
             sorting_algorithm(arr)
             end_time = time.time() - start_time
-            clocks.append(end_time)
-        average_clocks[n] = sum(clocks) / NUMBER_OF_ITERS[n]
+            clocks += end_time
+        average_clocks[n] = clocks / NUMBER_OF_ITERS[n]
     print(f"{sorting_algorithm}: {average_clocks}")
 
 
