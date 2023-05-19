@@ -13,7 +13,7 @@ class Node:
         return str(self.data)
 
     def put_next(self, node):
-        """(only for doubly linked list) puts node from parentheses
+        """(only for doubly linked list) puts node from filter
         ahead of the self one"""
         self.next = node
         node.prev = self
@@ -104,8 +104,12 @@ class DoublyLinkedList:
             self.length += 1
         return
 
-    def insert_after(self, node_data, after):
+    def insert_after(self, *node_data, after):
         """Puts given node(-s) after the node in the arguments"""
+        pass
+
+    def insert_before(self, *node_data, before):
+        """Puts given node(-s) before the node in the arguments"""
         pass
 
     def head(self):
@@ -119,19 +123,10 @@ class LinkedList:
         """Linked list constructor"""
         self.head = None
         self.length = 0
-        try:
-            node = Node(nodes_data[0])
-            self.head = node
-            self.length += 1
-        except IndexError:
-            self.head = None
-        except AttributeError:
-            self.head = None
-        else:
-            for elem in nodes_data[1:]:
-                node.next = Node(elem)
-                node = node.next
-                self.length += 1
+        self.last = self.head
+        if nodes_data is not None:
+            for node in nodes_data:
+                self.put_last(node)
 
     def __repr__(self):
         """String representation"""
@@ -171,52 +166,54 @@ class LinkedList:
 
     def put_last(self, *node_data):
         """Puts given node(-s) in the end of the list"""
-        last = None
+        if self.last is None:
+            self.last = self.head = Node(node_data[0])
+            self.length += 1
 
-        if self.head is None:
-            last = self.head
-        else:
-            for current in self:
-                if current.next is None:
-                    last = current
+            for each in node_data[1::]:
+                node = Node(each)
+                self.last.next = node
+                self.last = node
+                self.length += 1
+            return
 
         for each in node_data:
             node = Node(each)
-            last.next = node
-            last = node
+            self.last.next = node
+            self.last = node
             self.length += 1
         return
 
-    def put_before(self, new_node_data, before):
-        """Puts given node(-s) before the node in the arguments"""
-        if self.head is None:
-            raise Exception("List is empty")
-
-        elif self.head.data == before:
-            self.put(new_node_data)
-
-        prev_node = self.head
-        for node in self:
-            if node.data == before:
-                new_node = Node(new_node_data)
-                prev_node.next = new_node
-                new_node.next = node
-                self.length += 1
-                return
-            prev_node = node
-
-    def put_after(self, new_node_data, after):
-        """Puts given node(-s) after the node in the arguments"""
-        if self.head is None:
-            raise Exception("List is empty")
-
-        for node in self:
-            if node.data == after:
-                new_node = Node(new_node_data)
-                new_node.next = node.next
-                node.next = new_node
-                self.length += 1
-                return
+    # def put_before(self, new_node_data, before):
+    #     """Puts given node(-s) before the node in the arguments"""
+    #     if self.head is None:
+    #         raise Exception("List is empty")
+    #
+    #     elif self.head.data == before:
+    #         self.put(new_node_data)
+    #
+    #     prev_node = self.head
+    #     for node in self:
+    #         if node.data == before:
+    #             new_node = Node(new_node_data)
+    #             prev_node.next = new_node
+    #             new_node.next = node
+    #             self.length += 1
+    #             return
+    #         prev_node = node
+    #
+    # def put_after(self, new_node_data, after):
+    #     """Puts given node(-s) after the node in the arguments"""
+    #     if self.head is None:
+    #         raise Exception("List is empty")
+    #
+    #     for node in self:
+    #         if node.data == after:
+    #             new_node = Node(new_node_data)
+    #             new_node.next = node.next
+    #             node.next = new_node
+    #             self.length += 1
+    #             return
 
     def rem(self, node_to_remove):
         """Removes first node with matching data starting from the beginning"""
@@ -243,6 +240,7 @@ class Queue:
         """Queue constructor"""
         self.queue = DoublyLinkedList()
         self.tail = self.queue.head()
+        self.length = 0
 
     def __repr__(self):
         """String representation"""
@@ -256,19 +254,24 @@ class Queue:
             node = node.next
         return " <-> ".join(nodes)
 
+    def __len__(self):
+        return self.length
+
     def dequeue(self):
         """Gets item from the head of queue"""
         if self.queue.sen.next is None:
-            raise Exception("List is empty")
+            raise Exception("Queue is empty")
         else:
             res = self.queue.sen.prev
             self.queue.sen.prev.prev.put_next(self.queue.sen)
+            self.length -= 1
             return res
 
     def enqueue(self, *element):
         """Puts item in the end of queue"""
         for each in element:
             self.queue.insert(each)
+            self.length += 1
 
 
 class Stack:
@@ -307,6 +310,8 @@ if __name__ == "__main__":
 
     # testing doubly linked list
 
+    print("_____________________DOUBLY LINKED LIST______________________")
+
     doubly_linked = DoublyLinkedList()
     print(f"list: {doubly_linked}")
 
@@ -322,12 +327,14 @@ if __name__ == "__main__":
     doubly_linked.remove(3)
     print(f"3 is removed: {doubly_linked}")
 
-    doubly_linked.insert_last(0, -1, -2, -3, -4)
+    doubly_linked.insert_last()
     print(f"after insert last: {doubly_linked}")
 
     print(f"{doubly_linked.sen.prev} <-> sen <-> {doubly_linked.sen.next}")
 
     # Testing linked list
+
+    print("________________________LINKED LIST_________________________")
 
     linked = LinkedList(1, 2, 3)
     print(linked)
@@ -345,6 +352,8 @@ if __name__ == "__main__":
 
     # Testing queue
 
+    print("____________________________QUEUE____________________________")
+
     myqueue = Queue()
     myqueue.enqueue(5, 6, 5, 4, 6)
     # myqueue.enqueue(66)
@@ -357,6 +366,8 @@ if __name__ == "__main__":
     print(f"queue {myqueue}")
 
     # Testing stack
+
+    print("____________________________STACK____________________________")
 
     mystack = Stack()
     mystack.push(5)

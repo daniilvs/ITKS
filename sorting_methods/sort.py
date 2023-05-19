@@ -1,5 +1,4 @@
 import time
-
 import numpy as np
 
 NUMBER_OF_ITERS = {
@@ -22,6 +21,7 @@ CLOCKS = {
 
 
 def bubble(arr: list) -> list:
+    """Bubble sort"""
     size = len(arr)
     swapped = False
     for _iter in range(size - 1, 0, -1):
@@ -35,6 +35,7 @@ def bubble(arr: list) -> list:
 
 
 def insertion(arr: list) -> list:
+    """Insertion sort"""
     size = len(arr)
     for i in range(1, size):
         key = arr[i]
@@ -47,6 +48,7 @@ def insertion(arr: list) -> list:
 
 
 def selection(arr: list) -> list:
+    """Selection sort"""
     size = len(arr)
     for i in range(size):
         lowest = i
@@ -58,6 +60,7 @@ def selection(arr: list) -> list:
 
 
 def merge(arr: list) -> list:
+    """Merge sort"""
     size = len(arr)
     if size > 1:
         mid = size // 2
@@ -86,6 +89,7 @@ def merge(arr: list) -> list:
 
 
 def heapify(arr: list, size, root):
+    """Function to make a heap"""
     largest = root
     left = 2 * root + 1
     right = 2 * root + 2
@@ -99,6 +103,7 @@ def heapify(arr: list, size, root):
 
 
 def heap(arr: list) -> list:
+    """Heap sort"""
     size = len(arr)
     for i in range(size // 2, -1, -1):
         heapify(arr, size, i)
@@ -109,6 +114,7 @@ def heap(arr: list) -> list:
 
 
 def quick(arr: list) -> list:
+    """Quick sort"""
     if len(arr) <= 1:
         return arr
     else:
@@ -118,36 +124,41 @@ def quick(arr: list) -> list:
         return quick(left) + [pivot] + quick(right)
 
 
-# def counting(arr, exp1):
-#     n = len(arr)
-#     output = [0] * n
-#     count = [0] * 10
-#     for i in range(0, n):
-#         index = arr[i] // exp1
-#         count[index % 10] += 1
-#     for i in range(1, 10):
-#         count[i] += count[i - 1]
-#     i = n - 1
-#     while i >= 0:
-#         index = arr[i] // exp1
-#         output[count[index % 10] - 1] = arr[i]
-#         count[index % 10] -= 1
-#         i -= 1
-#     i = 0
-#     for i in range(0, len(arr)):
-#         arr[i] = output[i]
-#
-#
-# def radix(arr: list) -> list:
-#     max1 = max(arr)
-#     exp = 1
-#     while max1 / exp >= 1:
-#         counting(arr, exp)
-#         exp *= 10
-#     return arr
+def counting(arr, exp1):
+    """Counting function to make radix sort possible. Only for integers"""
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+    for i in range(0, n):
+        index = arr[i] // exp1
+        count[index % 10] += 1
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    i = n - 1
+    while i >= 0:
+        index = arr[i] // exp1
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+        i -= 1
+    i = 0
+    for i in range(0, len(arr)):
+        arr[i] = output[i]
+
+
+def radix(arr: list) -> list:
+    """Radix sort works ONLY WITH INTEGER NUMBERS"""
+    max1 = max(arr)
+    exp = 1
+    while max1 / exp >= 1:
+        counting(arr, exp)
+        exp *= 10
+    return arr
 
 
 def create(number, presorted=0.0):
+    """Creates a list of random float numbers in 0..1. Presorted let you make a part of the final list
+    sorted by default. Presorted should be in 0.0..1.0, where 0.0 - list will not be presorted at all,
+    and 1.0 - whole list is presorted"""
     if presorted > 0 and number > 1:
         almost = int(number * presorted)
         presorted = sorted((np.random.sample(almost, )).tolist())
@@ -158,6 +169,9 @@ def create(number, presorted=0.0):
 
 
 def time_of_sort(sorting_algorithm, presorted=0.0):
+    """Measures time spent on sorting_algorithm. Presorted let you make a part of the final list
+    sorted by default. Presorted should be in 0.0..1.0, where 0.0 - list will not be presorted at all,
+    and 1.0 - whole list is presorted"""
     average_clocks = CLOCKS.copy()
     for n in SIZE_OF_ARRAY:
         clocks = 0.0
