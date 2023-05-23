@@ -65,14 +65,13 @@ def brackets(input_text):
 if __name__ == "__main__":
 
     # Test for brackets()
-    # print("Text with parentheses: ")
-    #
-    # my_input = sys.stdin.readlines()
-    #
-    # brackets(my_input)
+    print("Text with parentheses: ")
+
+    my_input = sys.stdin.readlines()
+
+    brackets(my_input)
 
     # Test for labyrinth
-
     laby = np.array([[1, 1, 1, 1, 0, 1],
                     [1, 0, 0, 0, 0, 1],
                     [1, 1, 0, 1, 0, 1],

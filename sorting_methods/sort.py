@@ -50,6 +50,7 @@ def insertion(arr: list) -> list:
 def selection(arr: list) -> list:
     """Selection sort"""
     size = len(arr)
+
     for i in range(size):
         lowest = i
         for j in range(i + 1, size):
@@ -62,6 +63,7 @@ def selection(arr: list) -> list:
 def merge(arr: list) -> list:
     """Merge sort"""
     size = len(arr)
+
     if size > 1:
         mid = size // 2
         left = arr[:mid]
@@ -77,14 +79,17 @@ def merge(arr: list) -> list:
                 arr[k] = right[j]
                 j += 1
             k += 1
+
         while i < len(left):
             arr[k] = left[i]
             i += 1
             k += 1
+
         while j < len(right):
             arr[k] = right[j]
             j += 1
             k += 1
+
     return arr
 
 
@@ -95,8 +100,10 @@ def heapify(arr: list, size, root):
     right = 2 * root + 2
     if left < size and arr[root] < arr[left]:
         largest = left
+
     if right < size and arr[largest] < arr[right]:
         largest = right
+
     if largest != root:
         arr[root], arr[largest] = arr[largest], arr[root]
         heapify(arr, size, largest)
@@ -105,11 +112,14 @@ def heapify(arr: list, size, root):
 def heap(arr: list) -> list:
     """Heap sort"""
     size = len(arr)
+
     for i in range(size // 2, -1, -1):
         heapify(arr, size, i)
+
     for i in range(size - 1, 0, -1):
         arr[i], arr[0] = arr[0], arr[i]
         heapify(arr, i, 0)
+
     return arr
 
 
@@ -129,18 +139,22 @@ def counting(arr, exp1):
     n = len(arr)
     output = [0] * n
     count = [0] * 10
+
     for i in range(0, n):
         index = arr[i] // exp1
         count[index % 10] += 1
+
     for i in range(1, 10):
         count[i] += count[i - 1]
     i = n - 1
+
     while i >= 0:
         index = arr[i] // exp1
         output[count[index % 10] - 1] = arr[i]
         count[index % 10] -= 1
         i -= 1
     i = 0
+
     for i in range(0, len(arr)):
         arr[i] = output[i]
 
@@ -149,9 +163,11 @@ def radix(arr: list) -> list:
     """Radix sort works ONLY WITH INTEGER NUMBERS"""
     max1 = max(arr)
     exp = 1
+
     while max1 / exp >= 1:
         counting(arr, exp)
         exp *= 10
+
     return arr
 
 
@@ -173,8 +189,10 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
     sorted by default. Presorted should be in 0.0..1.0, where 0.0 - list will not be presorted at all,
     and 1.0 - whole list is presorted"""
     average_clocks = CLOCKS.copy()
+
     for n in SIZE_OF_ARRAY:
         clocks = 0.0
+
         for i in range(NUMBER_OF_ITERS[n]):
             arr = create(n, presorted)
             start_time = time.time()
@@ -182,6 +200,7 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
             end_time = time.time() - start_time
             clocks += end_time
         average_clocks[n] = clocks / NUMBER_OF_ITERS[n]
+
     return sorting_algorithm
     # print(f"{sorting_algorithm}: {average_clocks}")
 
