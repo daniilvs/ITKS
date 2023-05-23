@@ -1,4 +1,4 @@
-from lsq import mycollections as mc
+from collections import mycollections as mc
 import numpy as np
 import re
 import sys
