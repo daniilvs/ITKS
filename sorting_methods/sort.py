@@ -182,7 +182,8 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
             end_time = time.time() - start_time
             clocks += end_time
         average_clocks[n] = clocks / NUMBER_OF_ITERS[n]
-    print(f"{sorting_algorithm}: {average_clocks}")
+    return sorting_algorithm
+    # print(f"{sorting_algorithm}: {average_clocks}")
 
 
 if __name__ == '__main__':

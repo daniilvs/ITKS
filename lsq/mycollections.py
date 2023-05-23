@@ -149,11 +149,12 @@ class LinkedList:
         """Returns length of the list"""
         return self.length
 
-    def __getitem__(self, item):
-        """How to get the node by its data"""
-        for node in self:
-            if node.data == item:
-                return node
+    def __getitem__(self, index):
+        """How to get the node by its index"""
+        node = self.head
+        for _ in range(index):
+            node = node.next
+        return node
 
     def put(self, *node_data):
         """Puts given node(-s) in the beginning of the list"""
@@ -184,37 +185,6 @@ class LinkedList:
             self.length += 1
         return
 
-    # def put_before(self, new_node_data, before):
-    #     """Puts given node(-s) before the node in the arguments"""
-    #     if self.head is None:
-    #         raise Exception("List is empty")
-    #
-    #     elif self.head.data == before:
-    #         self.put(new_node_data)
-    #
-    #     prev_node = self.head
-    #     for node in self:
-    #         if node.data == before:
-    #             new_node = Node(new_node_data)
-    #             prev_node.next = new_node
-    #             new_node.next = node
-    #             self.length += 1
-    #             return
-    #         prev_node = node
-    #
-    # def put_after(self, new_node_data, after):
-    #     """Puts given node(-s) after the node in the arguments"""
-    #     if self.head is None:
-    #         raise Exception("List is empty")
-    #
-    #     for node in self:
-    #         if node.data == after:
-    #             new_node = Node(new_node_data)
-    #             new_node.next = node.next
-    #             node.next = new_node
-    #             self.length += 1
-    #             return
-
     def rem(self, node_to_remove):
         """Removes first node with matching data starting from the beginning"""
         if self.head is None:
@@ -234,17 +204,13 @@ class LinkedList:
             prev_node = node
 
 
-class Queue:
+class Queue(DoublyLinkedList):
     """Creates myqueue queue. First in - first out"""
-    def __init__(self):
-        """Queue constructor"""
-        self.queue = DoublyLinkedList()
-        self.tail = self.queue.head()
-        self.length = 0
+    # def __init__(self, *nodes_data):
 
     def __repr__(self):
         """String representation"""
-        node = self.queue.sen.next
+        node = self.sen.next
         nodes = []
         if node.data is None:
             return "Queue is empty"
@@ -252,38 +218,32 @@ class Queue:
         while node.data is not None:
             nodes.append(str(node.data))
             node = node.next
-        return " <-> ".join(nodes)
-
-    def __len__(self):
-        return self.length
+        return " -> ".join(nodes)
 
     def dequeue(self):
         """Gets item from the head of queue"""
-        if self.queue.sen.next is None:
+        if self.sen.next is None:
             raise Exception("Queue is empty")
         else:
-            res = self.queue.sen.prev
-            self.queue.sen.prev.prev.put_next(self.queue.sen)
-            self.length -= 1
+            res = self.sen.prev
+            self.sen.prev.prev.put_next(self.sen)
             return res
 
     def enqueue(self, *element):
         """Puts item in the end of queue"""
         for each in element:
-            self.queue.insert(each)
-            self.length += 1
+            self.insert(each)
 
 
-class Stack:
+class Stack(LinkedList):
     """Creates myqueue stack. Last in - first out"""
-    def __init__(self):
-        """Stack constructor"""
-        self.stack = LinkedList()
-        self.top = 0
 
     def __repr__(self):
         """String representation"""
-        node = self.stack.head
+        if self.head is None:
+            return "Stack is empty"
+
+        node = self.head
         nodes = []
         while node is not None:
             nodes.append(str(node.data))
@@ -292,18 +252,20 @@ class Stack:
 
     def pop(self):
         """Get the last item to enter the stack (LIFO)"""
-        if self.stack.head is None:
+        if self.head is None:
             raise Exception("Stack is empty")
         else:
-            self.top -= 1
-            res = self.stack.head.data
-            self.stack.head = self.stack.head.next
+            res = self.head.data
+            self.head = self.head.next
+            self.length -= 1
             return res
 
     def push(self, element):
         """Puts item into the stack"""
-        self.stack.put(element)
-        self.top += 1
+        self.put(element)
+
+    def top(self):
+        return self.head
 
 
 if __name__ == "__main__":
@@ -355,14 +317,12 @@ if __name__ == "__main__":
     print("____________________________QUEUE____________________________")
 
     myqueue = Queue()
-    myqueue.enqueue(5, 6, 5, 4, 6)
-    # myqueue.enqueue(66)
-    # myqueue.enqueue('f')
-    # myqueue.enqueue(1)
+    myqueue.enqueue(5)
+    myqueue.enqueue(66)
+    myqueue.enqueue('f')
+    myqueue.enqueue(1)
     print(f"queue {myqueue}")
-    # print(f"head {myqueue.queue.head.data}")
     print(f"dequeue {myqueue.dequeue()}")
-    # print(f"tail {myqueue.tail}")
     print(f"queue {myqueue}")
 
     # Testing stack
@@ -374,9 +334,9 @@ if __name__ == "__main__":
     mystack.push(66)
     mystack.push('f')
     mystack.push(1)
-    print(f"top {mystack.top}")
+
     print(f"stack {mystack}")
-    print(f"head {mystack.stack.head.data}")
+    print(f"top {mystack.top().data}")
     print(f"pop {mystack.pop()}")
-    print(f"top {mystack.top}")
+    print(f"top {mystack.top()}")
     print(f"stack {mystack}")
