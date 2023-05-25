@@ -12,6 +12,9 @@ class Node:
         """String representation"""
         return str(self.data)
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
     def put_next(self, node):
         """(only for doubly linked list) puts node from filter
         ahead of the self one"""
@@ -25,7 +28,7 @@ class DoublyLinkedList:
         """Doubly linked list constructor"""
         self.sen = Node(None)
         self.sen.put_next(self.sen)
-        self.length = 0
+        self.__length = 0
 
         if nodes_data is not None:
             for node in nodes_data:
@@ -51,14 +54,18 @@ class DoublyLinkedList:
             node = node.next
 
     def __len__(self):
-        """Returns length of the list"""
-        return self.length
+        """Returns __length of the list"""
+        return self.__length
 
-    def __getitem__(self, item):
-        """How to get the node by its data"""
-        for node in self:
-            if node.data == item:
-                return node
+    def __getitem__(self, index):
+        """How to get the node by its index"""
+        node = self.sen.next
+        for _ in range(index):
+            node = node.next
+        return node
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     def remove_last(self):
         """Removes last node"""
@@ -66,7 +73,7 @@ class DoublyLinkedList:
             raise Exception("List is empty")
         else:
             self.sen.prev.prev.put_next(self.sen)
-            self.length -= 1
+            self.__length -= 1
             return
 
     def remove(self, node_to_remove):
@@ -78,7 +85,7 @@ class DoublyLinkedList:
                 if node.data == node_to_remove:
                     node.prev.next = node.next
                     node.next.prev = node.prev
-                    self.length -= 1
+                    self.__length -= 1
                     return
 
     def insert(self, *node_data):
@@ -90,7 +97,7 @@ class DoublyLinkedList:
             self.sen.put_next(node)
 
             self.sen.next = node
-            self.length += 1
+            self.__length += 1
         return
 
     def insert_last(self, *node_data):
@@ -101,7 +108,7 @@ class DoublyLinkedList:
             self.sen.prev.put_next(node)
             node.put_next(self.sen)
 
-            self.length += 1
+            self.__length += 1
         return
 
     def insert_after(self, *node_data, after):
@@ -122,7 +129,7 @@ class LinkedList:
     def __init__(self, *nodes_data):
         """Linked list constructor"""
         self.head = None
-        self.length = 0
+        self.__length = 0
         self.last = self.head
         if nodes_data is not None:
             for node in nodes_data:
@@ -146,8 +153,8 @@ class LinkedList:
             node = node.next
 
     def __len__(self):
-        """Returns length of the list"""
-        return self.length
+        """Returns __length of the list"""
+        return self.__length
 
     def __getitem__(self, index):
         """How to get the node by its index"""
@@ -156,33 +163,47 @@ class LinkedList:
             node = node.next
         return node
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
     def put(self, *node_data):
         """Puts given node(-s) in the beginning of the list"""
+        if self.last is None:
+            self.last = self.head = Node(node_data[0])
+            self.__length += 1
+
+            for each in node_data[1::]:
+                node = Node(each)
+                self.last.next = node
+                self.last = node
+                self.__length += 1
+            return
+
         for each in node_data[::-1]:
             node = Node(each)
             node.next = self.head
             self.head = node
-            self.length += 1
+            self.__length += 1
         return
 
     def put_last(self, *node_data):
         """Puts given node(-s) in the end of the list"""
         if self.last is None:
             self.last = self.head = Node(node_data[0])
-            self.length += 1
+            self.__length += 1
 
             for each in node_data[1::]:
                 node = Node(each)
                 self.last.next = node
                 self.last = node
-                self.length += 1
+                self.__length += 1
             return
 
         for each in node_data:
             node = Node(each)
             self.last.next = node
             self.last = node
-            self.length += 1
+            self.__length += 1
         return
 
     def rem(self, node_to_remove):
@@ -192,16 +213,26 @@ class LinkedList:
 
         elif self.head.data == node_to_remove:
             self.head = self.head.next
-            self.length -= 1
+            self.__length -= 1
             return
 
         prev_node = self.head
         for node in self:
             if node.data == node_to_remove:
                 prev_node.next = node.next
-                self.length -= 1
+                self.__length -= 1
                 return
             prev_node = node
+
+    def rem_first(self):
+        """Removes first node"""
+        if self.head is None:
+            raise Exception("List is empty")
+        else:
+            res = self.head
+            self.head = self.head.next
+            self.__length -= 1
+            return res
 
 
 class Queue(DoublyLinkedList):
@@ -219,6 +250,9 @@ class Queue(DoublyLinkedList):
             nodes.append(str(node.data))
             node = node.next
         return " -> ".join(nodes)
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     def dequeue(self):
         """Gets item from the head of queue"""
@@ -250,15 +284,15 @@ class Stack(LinkedList):
             node = node.next
         return " -> ".join(nodes)
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
     def pop(self):
         """Get the last item to enter the stack (LIFO)"""
         if self.head is None:
             raise Exception("Stack is empty")
         else:
-            res = self.head.data
-            self.head = self.head.next
-            self.length -= 1
-            return res
+            return self.rem_first()
 
     def push(self, element):
         """Puts item into the stack"""
@@ -289,7 +323,7 @@ if __name__ == "__main__":
     doubly_linked.remove(3)
     print(f"3 is removed: {doubly_linked}")
 
-    doubly_linked.insert_last()
+    doubly_linked.insert_last(0)
     print(f"after insert last: {doubly_linked}")
 
     print(f"{doubly_linked.sen.prev} <-> sen <-> {doubly_linked.sen.next}")
@@ -298,7 +332,9 @@ if __name__ == "__main__":
 
     print("________________________LINKED LIST_________________________")
 
-    linked = LinkedList(1, 2, 3)
+    linked = LinkedList()
+
+    linked.put(1, 2, 3)
     print(linked)
 
     linked.put('first')
@@ -337,6 +373,6 @@ if __name__ == "__main__":
 
     print(f"stack {mystack}")
     print(f"top {mystack.top().data}")
-    print(f"pop {mystack.pop()}")
+    print(f"pop {mystack.pop}")
     print(f"top {mystack.top()}")
     print(f"stack {mystack}")

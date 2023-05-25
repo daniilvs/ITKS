@@ -1,4 +1,4 @@
-from collections import mycollections as mc
+from mycollections.src.linked import mycollections as mc
 import numpy as np
 import re
 import sys
@@ -9,6 +9,9 @@ def brackets(input_text):
 
     # every line -> list of chars
     input_chars = [list(each_line) for each_line in input_text]
+
+    if len(input_chars) == 0:
+        return 'Where is the input?'
 
     # enumerate every line from stdin
     input_chars[:] = enumerate(input_chars)
@@ -38,17 +41,17 @@ def brackets(input_text):
 
     if len(opening) > 0:
         if len(opening) == 1:
-            print(f"There is one unused opening bracket in the {opening[0].data[0]} line in the "
-                  f"{opening[0].data[1]} position\n")
+            return f"There is one unused opening bracket in line {opening[0].data[0]} position " \
+                   f"{opening[0].data[1]}\n"
         else:
-            print(f"There are {len(opening)} unused opening bracket in the {opening}\n")
+            return f"There are {len(opening)} unused opening bracket in the {opening}\n"
 
     if len(closing) > 0:
         if len(closing) == 1:
-            print(f"There is one unused closing bracket in the {closing[0][0]} line in the "
-                  f"{closing[0][1]} position\n")
+            return f"There is one unused closing bracket in line {closing[0][0]} position " \
+                  f"{closing[0][1]} \n"
         else:
-            print(f"There are {len(closing)} unused closing bracket in the {closing}\n")
+            return f"There are {len(closing)} unused closing bracket in the {closing}\n"
 
 
 def path(labyrinth, start, finish, my_path):
@@ -56,11 +59,9 @@ def path(labyrinth, start, finish, my_path):
     def compare(pos, lim):
         """Checks if you are going to the walls of the labyrinth"""
         if pos not in range(0, lim) or labyrinth[y_pos][x_pos] == 1:
-            print('You are going the wrong way')
-            return 1
+            return 'You are going the wrong way'
         elif [y_pos, x_pos] == fi:
-            print("You found the exit")
-            return 0
+            return 'You found the exit'
 
     # Reads your start and finish positions (as first two numbers anywhere in the string) and your route.
     # It can be written in any way you want but must contain command words like: left, l, right, r, up, u, down, d
@@ -72,11 +73,14 @@ def path(labyrinth, start, finish, my_path):
     # Current position
     y_pos, x_pos = st[0], st[1]
 
-    # Checks if start position is in the wall
-    if labyrinth[y_pos][x_pos] == 1:
-        raise Exception('Are you a victim of Philadelphia experiment?')
+    # Checks if labyrinth is empty or start position is in the wall
+    try:
+        if labyrinth[y_pos][x_pos] == 1:
+            return 'Are you a victim of Philadelphia experiment?'
+    except IndexError:
+        return 'Are you even in labyrinth?'
 
-    # Some boundaries of the labyrinth (right and bottom)
+        # Some boundaries of the labyrinth (right and bottom)
     y_lim = np.shape(labyrinth)[0]
     x_lim = np.shape(labyrinth)[1]
 
@@ -85,27 +89,27 @@ def path(labyrinth, start, finish, my_path):
         match move:
             case 'up' | 'u':
                 y_pos -= 1
-                if compare(y_pos, y_lim) == 1:
-                    return
+                if compare(y_pos, y_lim) is not None:
+                    return compare(y_pos, y_lim)
 
             case 'down' | 'd':
                 y_pos += 1
-                if compare(y_pos, y_lim) == 1:
-                    return
+                if compare(y_pos, y_lim) is not None:
+                    return compare(y_pos, y_lim)
 
             case 'left' | 'l':
                 x_pos -= 1
-                if compare(x_pos, x_lim) == 1:
-                    return
+                if compare(x_pos, x_lim) is not None:
+                    return compare(y_pos, y_lim)
 
             case "right" | "r":
                 x_pos += 1
-                if compare(x_pos, x_lim) == 1:
-                    return
+                if compare(x_pos, x_lim) is not None:
+                    return compare(y_pos, y_lim)
 
     # If the whole algorithm is done, but we didn't reach the exit or the wall
     if [y_pos, x_pos] != fi:
-        print('Where are you?')
+        return 'Where are you?'
 
 
 if __name__ == "__main__":
@@ -115,7 +119,7 @@ if __name__ == "__main__":
 
     my_input = sys.stdin.readlines()
 
-    brackets(my_input)
+    print(brackets(my_input))
 
     # ____________________Test for labyrinth_____________________
     laby = np.array([[1, 1, 1, 1, 0, 1],
@@ -128,6 +132,6 @@ if __name__ == "__main__":
     my_finish = input("Your exit from the labyrinth: ")
     da_way = input("Your path: ")
 
-    path(laby, my_start, my_finish, da_way)
+    print(laby[0][4])
 
-    print(laby[1][2])
+    print(path(laby, my_start, my_finish, da_way))

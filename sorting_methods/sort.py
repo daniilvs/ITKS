@@ -215,3 +215,4 @@ if __name__ == '__main__':
     time_of_sort(quick)
     time_of_sort(quick, 0.9)
 
+
