@@ -28,7 +28,7 @@ def brackets(input_text):
 
             # if the opening bracket is found - push its position to the stack
             # else if the closing bracket is found and there is at least one opening bracket already in the stack -
-            # pop this opening one from the stack. Otherwise, append position of the closing one to the list
+            # pop this opening one from the stack. Else, appends position of the closing one to the list
             if char == '(':
                 opening.push((num + 1, pos + 1))
             elif char == ')':
