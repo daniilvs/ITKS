@@ -2,6 +2,7 @@ class Node:
     """Creates myqueue node. Node contains information about data which is put in it and
     pointers to the next (for both linked list and doubly linked list) and to the 
     previous (only for doubly linked list) nodes in list"""
+
     def __init__(self, data):
         """Node constructor"""
         self.data = data
@@ -24,6 +25,7 @@ class Node:
 
 class DoublyLinkedList:
     """Creates myqueue doubly linked list with sentinel"""
+
     def __init__(self, *nodes_data):
         """Doubly linked list constructor"""
         self.sen = Node(None)
@@ -88,9 +90,9 @@ class DoublyLinkedList:
                     self.__length -= 1
                     return
 
-    def insert(self, *node_data):
+    def insert(self, *nodes_data):
         """Puts given node(-s) in the beginning of the list"""
-        for each in node_data[::-1]:
+        for each in nodes_data[::-1]:
             node = Node(each)
 
             node.put_next(self.sen.next)
@@ -126,6 +128,7 @@ class DoublyLinkedList:
 
 class LinkedList:
     """Creates myqueue single linked list"""
+
     def __init__(self, *nodes_data):
         """Linked list constructor"""
         self.head = None
@@ -237,7 +240,6 @@ class LinkedList:
 
 class Queue(DoublyLinkedList):
     """Creates myqueue queue. First in - first out"""
-    # def __init__(self, *nodes_data):
 
     def __repr__(self):
         """String representation"""
@@ -251,9 +253,6 @@ class Queue(DoublyLinkedList):
             node = node.next
         return " -> ".join(nodes)
 
-    def __eq__(self, other):
-        return str(self) == str(other)
-
     def dequeue(self):
         """Gets item from the head of queue"""
         if self.sen.next is None:
@@ -263,9 +262,9 @@ class Queue(DoublyLinkedList):
             self.sen.prev.prev.put_next(self.sen)
             return res
 
-    def enqueue(self, *element):
+    def enqueue(self, *elements):
         """Puts item in the end of queue"""
-        for each in element:
+        for each in elements:
             self.insert(each)
 
 
@@ -284,9 +283,6 @@ class Stack(LinkedList):
             node = node.next
         return " -> ".join(nodes)
 
-    def __eq__(self, other):
-        return str(self) == str(other)
-
     def pop(self):
         """Get the last item to enter the stack (LIFO)"""
         if self.head is None:
@@ -303,7 +299,6 @@ class Stack(LinkedList):
 
 
 if __name__ == "__main__":
-
     # testing doubly linked list
 
     print("_____________________DOUBLY LINKED LIST______________________")

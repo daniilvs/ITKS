@@ -1,11 +1,11 @@
 import unittest
-from mycollections.src.linked import mycollections as mc
-from sorting_methods import sort
+from labs.src.linked import linked as mc
+from labs.src.sorting_methods import sort
 import numpy as np
-from tasks import brackets_labyrinth as bl
+from labs.src.tasks import brackets_labyrinth as bl
 
 
-class TestMyCollections(unittest.TestCase):
+class TestLinked(unittest.TestCase):
     def setUp(self) -> None:
         self.doubly_linked = mc.DoublyLinkedList()
         self.linked = mc.LinkedList()

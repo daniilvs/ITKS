@@ -56,7 +56,7 @@ def selection(arr: list) -> list:
         for j in range(i + 1, size):
             if arr[j] < arr[lowest]:
                 lowest = j
-            arr[i], arr[lowest] = arr[lowest], arr[i]
+        arr[i], arr[lowest] = arr[lowest], arr[i]
     return arr
 
 
@@ -206,13 +206,14 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
 
 
 if __name__ == '__main__':
-    time_of_sort(insertion)
-    time_of_sort(selection)
-    time_of_sort(merge)
-    time_of_sort(heap)
-    time_of_sort(quick)
-    time_of_sort(radix)
-    time_of_sort(quick)
-    time_of_sort(quick, 0.9)
-
-
+    # time_of_sort(insertion)
+    # time_of_sort(selection)
+    # time_of_sort(merge)
+    # time_of_sort(heap)
+    # time_of_sort(quick)
+    # time_of_sort(radix)
+    # time_of_sort(quick)
+    # time_of_sort(quick, 0.9)
+    a = create(10)
+    print(a)
+    print(selection(a))

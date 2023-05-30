@@ -1,4 +1,4 @@
-from mycollections.src.linked import mycollections as mc
+from labs.src.linked import linked as mc
 import numpy as np
 import re
 import sys
@@ -49,13 +49,14 @@ def brackets(input_text):
     if len(closing) > 0:
         if len(closing) == 1:
             return f"There is one unused closing bracket in line {closing[0][0]} position " \
-                  f"{closing[0][1]} \n"
+                   f"{closing[0][1]} \n"
         else:
             return f"There are {len(closing)} unused closing bracket in the {closing}\n"
 
 
 def path(labyrinth, start, finish, my_path):
     """Tells you if you are going to find an exit from the labyrinth"""
+
     def compare(pos, lim):
         """Checks if you are going to the walls of the labyrinth"""
         if pos not in range(0, lim) or labyrinth[y_pos][x_pos] == 1:
@@ -80,7 +81,7 @@ def path(labyrinth, start, finish, my_path):
     except IndexError:
         return 'Are you even in labyrinth?'
 
-        # Some boundaries of the labyrinth (right and bottom)
+    # Some boundaries of the labyrinth (right and bottom)
     y_lim = np.shape(labyrinth)[0]
     x_lim = np.shape(labyrinth)[1]
 
@@ -113,7 +114,6 @@ def path(labyrinth, start, finish, my_path):
 
 
 if __name__ == "__main__":
-
     # ___________________Test for brackets()____________________
     print("Text with parentheses: ")
 
@@ -123,10 +123,10 @@ if __name__ == "__main__":
 
     # ____________________Test for labyrinth_____________________
     laby = np.array([[1, 1, 1, 1, 0, 1],
-                    [1, 0, 0, 0, 0, 1],
-                    [1, 1, 0, 1, 0, 1],
-                    [1, 0, 0, 1, 1, 1],
-                    [1, 1, 0, 1, 1, 1]])
+                     [1, 0, 0, 0, 0, 1],
+                     [1, 1, 0, 1, 0, 1],
+                     [1, 0, 0, 1, 1, 1],
+                     [1, 1, 0, 1, 1, 1]])
 
     my_start = input("Your start point: ")
     my_finish = input("Your exit from the labyrinth: ")
