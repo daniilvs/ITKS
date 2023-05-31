@@ -1,5 +1,5 @@
 class Node:
-    """Creates myqueue node. Node contains information about data which is put in it and
+    """Creates node. Node contains information about data which is put in it and
     pointers to the next (for both linked list and doubly linked list) and to the 
     previous (only for doubly linked list) nodes in list"""
 
@@ -24,7 +24,7 @@ class Node:
 
 
 class DoublyLinkedList:
-    """Creates myqueue doubly linked list with sentinel"""
+    """Creates doubly linked list with sentinel"""
 
     def __init__(self, *nodes_data):
         """Doubly linked list constructor"""
@@ -127,7 +127,7 @@ class DoublyLinkedList:
 
 
 class LinkedList:
-    """Creates myqueue single linked list"""
+    """Creates single linked list"""
 
     def __init__(self, *nodes_data):
         """Linked list constructor"""
@@ -239,7 +239,7 @@ class LinkedList:
 
 
 class Queue(DoublyLinkedList):
-    """Creates myqueue queue. First in - first out"""
+    """Creates queue. First in - first out"""
 
     def __repr__(self):
         """String representation"""
@@ -269,7 +269,7 @@ class Queue(DoublyLinkedList):
 
 
 class Stack(LinkedList):
-    """Creates myqueue stack. Last in - first out"""
+    """Creates stack. Last in - first out"""
 
     def __repr__(self):
         """String representation"""
