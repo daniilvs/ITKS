@@ -5,8 +5,8 @@ NUMBER_OF_ITERS = {
     100: 1000,
     1000: 1000,
     10000: 100,
-    # 100000: 100,
-    # 1000000: 10
+    100000: 100,
+    1000000: 10
 }
 
 SIZE_OF_ARRAY = list(NUMBER_OF_ITERS.keys())
@@ -15,8 +15,8 @@ CLOCKS = {
     100: 0.0,
     1000: 0.0,
     10000: 0.0,
-    # 100000: 0.0,
-    # 1000000: 0.0
+    100000: 0.0,
+    1000000: 0.0
 }
 
 
@@ -201,19 +201,18 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
             clocks += end_time
         average_clocks[n] = clocks / NUMBER_OF_ITERS[n]
 
-    return sorting_algorithm
-    # print(f"{sorting_algorithm}: {average_clocks}")
+    print(f"{sorting_algorithm}: {average_clocks}")
 
 
 if __name__ == '__main__':
     # time_of_sort(insertion)
     # time_of_sort(selection)
-    # time_of_sort(merge)
-    # time_of_sort(heap)
-    # time_of_sort(quick)
+    time_of_sort(merge)
+    time_of_sort(heap)
+    time_of_sort(quick)
     # time_of_sort(radix)
     # time_of_sort(quick)
     # time_of_sort(quick, 0.9)
-    a = create(10)
-    print(a)
-    print(selection(a))
+    # a = create(10)
+    # print(a)
+    # print(selection(a))

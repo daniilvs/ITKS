@@ -21,7 +21,7 @@ def brackets(input_text):
     closing = []
 
     # traverse through the stdin
-    for (num, char_line) in input_chars:
+    for (str_num, char_line) in input_chars:
 
         # traverse through the line to find a parentheses
         for (pos, char) in enumerate(char_line):
@@ -30,12 +30,12 @@ def brackets(input_text):
             # else if the closing bracket is found and there is at least one opening bracket already in the stack -
             # pop this opening one from the stack. Else, appends position of the closing one to the list
             if char == '(':
-                opening.push((num + 1, pos + 1))
+                opening.push((str_num + 1, pos + 1))
             elif char == ')':
                 if len(opening) > 0:
                     opening.pop()
                 else:
-                    closing.append((num + 1, pos + 1))
+                    closing.append((str_num + 1, pos + 1))
             else:
                 continue
 
@@ -115,11 +115,11 @@ def path(labyrinth, start, finish, my_path):
 
 if __name__ == "__main__":
     # ___________________Test for brackets()____________________
-    print("Text with parentheses: ")
-
-    my_input = sys.stdin.readlines()
-
-    print(brackets(my_input))
+    # print("Text with parentheses: ")
+    #
+    # my_input = sys.stdin.readlines()
+    #
+    # print(brackets(my_input))
 
     # ____________________Test for labyrinth_____________________
     laby = np.array([[1, 1, 1, 1, 0, 1],

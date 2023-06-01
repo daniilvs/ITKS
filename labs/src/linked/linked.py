@@ -9,7 +9,7 @@ class Node:
         self.next = None
         self.prev = None
 
-    def __repr__(self):
+    def __str__(self):
         """String representation"""
         return str(self.data)
 
@@ -36,7 +36,7 @@ class DoublyLinkedList:
             for node in nodes_data:
                 self.insert_last(Node(node))
 
-    def __repr__(self):
+    def __str__(self):
         """String representation"""
         node = self.sen.next
         nodes = []
@@ -61,6 +61,8 @@ class DoublyLinkedList:
 
     def __getitem__(self, index):
         """How to get the node by its index"""
+        if index not in range(0, self.__length):
+            raise IndexError
         node = self.sen.next
         for _ in range(index):
             node = node.next
@@ -71,24 +73,21 @@ class DoublyLinkedList:
 
     def remove_last(self):
         """Removes last node"""
-        if self.sen.next is None:
-            raise Exception("List is empty")
-        else:
-            self.sen.prev.prev.put_next(self.sen)
-            self.__length -= 1
-            return
+        self.sen.prev.prev.put_next(self.sen)
+        self.__length -= 1
+        return
+
+    def remove_index(self, index):
+        pass
 
     def remove(self, node_to_remove):
         """Removes first node with matching data starting from the beginning"""
-        if self.sen.next is None:
-            raise Exception("List is empty")
-        else:
-            for node in self:
-                if node.data == node_to_remove:
-                    node.prev.next = node.next
-                    node.next.prev = node.prev
-                    self.__length -= 1
-                    return
+        for node in self:
+            if node.data == node_to_remove:
+                node.prev.next = node.next
+                node.next.prev = node.prev
+                self.__length -= 1
+                return
 
     def insert(self, *nodes_data):
         """Puts given node(-s) in the beginning of the list"""
@@ -138,7 +137,7 @@ class LinkedList:
             for node in nodes_data:
                 self.put_last(node)
 
-    def __repr__(self):
+    def __str__(self):
         """String representation"""
         node = self.head
         nodes = []
@@ -212,7 +211,7 @@ class LinkedList:
     def rem(self, node_to_remove):
         """Removes first node with matching data starting from the beginning"""
         if self.head is None:
-            raise Exception("List is empty")
+            return "List is empty"
 
         elif self.head.data == node_to_remove:
             self.head = self.head.next
@@ -230,7 +229,7 @@ class LinkedList:
     def rem_first(self):
         """Removes first node"""
         if self.head is None:
-            raise Exception("List is empty")
+            return "List is empty"
         else:
             res = self.head
             self.head = self.head.next
@@ -241,7 +240,7 @@ class LinkedList:
 class Queue(DoublyLinkedList):
     """Creates queue. First in - first out"""
 
-    def __repr__(self):
+    def __str__(self):
         """String representation"""
         node = self.sen.next
         nodes = []
@@ -271,7 +270,7 @@ class Queue(DoublyLinkedList):
 class Stack(LinkedList):
     """Creates stack. Last in - first out"""
 
-    def __repr__(self):
+    def __str__(self):
         """String representation"""
         if self.head is None:
             return "Stack is empty"
@@ -320,6 +319,8 @@ if __name__ == "__main__":
 
     doubly_linked.insert_last(0)
     print(f"after insert last: {doubly_linked}")
+
+    print(doubly_linked[0])
 
     print(f"{doubly_linked.sen.prev} <-> sen <-> {doubly_linked.sen.next}")
 
