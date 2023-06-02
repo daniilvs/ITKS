@@ -4,7 +4,7 @@ import re
 import sys
 
 
-def brackets(input_text):
+def brackets(input_text: list[str]) -> str:
     """Finds unused parentheses and prints out how many and where"""
 
     # every line -> list of chars
@@ -39,22 +39,29 @@ def brackets(input_text):
             else:
                 continue
 
+    res_opening = ''
+    res_closing = ''
+
     if len(opening) > 0:
         if len(opening) == 1:
-            return f"There is one unused opening bracket in line {opening[0].data[0]} position " \
+            res_opening = f"There is one unused opening bracket in line {opening[0].data[0]} position " \
                    f"{opening[0].data[1]}\n"
         else:
-            return f"There are {len(opening)} unused opening bracket in the {opening}\n"
+            res_opening = f"There are {len(opening)} unused opening bracket in the " \
+                          f"{' and '.join(str(node) for node in opening)}\n"
 
     if len(closing) > 0:
         if len(closing) == 1:
-            return f"There is one unused closing bracket in line {closing[0][0]} position " \
+            res_closing = f"There is one unused closing bracket in line {closing[0][0]} position " \
                    f"{closing[0][1]} \n"
         else:
-            return f"There are {len(closing)} unused closing bracket in the {closing}\n"
+            res_closing = f"There are {len(closing)} unused closing bracket in the " \
+                          f"{' and '.join(str(node) for node in closing)}\n"
+
+    return f'{res_opening}{res_closing}'
 
 
-def path(labyrinth, start, finish, my_path):
+def path(labyrinth: np.array, start: str, finish: str, my_path: str) -> str:
     """Tells you if you are going to find an exit from the labyrinth"""
 
     def compare(pos, lim):
@@ -112,26 +119,30 @@ def path(labyrinth, start, finish, my_path):
     if [y_pos, x_pos] != fi:
         return 'Where are you?'
 
+def da_way(maze: np.array, start: tuple, finish: tuple):
+    pass
+
+
 
 if __name__ == "__main__":
     # ___________________Test for brackets()____________________
-    # print("Text with parentheses: ")
-    #
-    # my_input = sys.stdin.readlines()
-    #
-    # print(brackets(my_input))
+    print("Text with parentheses: ")
+
+    my_input = sys.stdin.readlines()
+
+    print(brackets(my_input))
 
     # ____________________Test for labyrinth_____________________
-    laby = np.array([[1, 1, 1, 1, 0, 1],
-                     [1, 0, 0, 0, 0, 1],
-                     [1, 1, 0, 1, 0, 1],
-                     [1, 0, 0, 1, 1, 1],
-                     [1, 1, 0, 1, 1, 1]])
-
-    my_start = input("Your start point: ")
-    my_finish = input("Your exit from the labyrinth: ")
-    da_way = input("Your path: ")
-
-    print(laby[0][4])
-
-    print(path(laby, my_start, my_finish, da_way))
+    # laby = np.array([[1, 1, 1, 1, 0, 1],
+    #                  [1, 0, 0, 0, 0, 1],
+    #                  [1, 1, 0, 1, 0, 1],
+    #                  [1, 0, 0, 1, 1, 1],
+    #                  [1, 1, 0, 1, 1, 1]])
+    #
+    # my_start = input("Your start point: ")
+    # my_finish = input("Your exit from the labyrinth: ")
+    # da_way = input("Your path: ")
+    #
+    # print(laby[0][4])
+    #
+    # print(path(laby, my_start, my_finish, da_way))
