@@ -2,8 +2,8 @@ import time
 import numpy as np
 
 NUMBER_OF_ITERS = {
-    100: 1000,
-    1000: 1000,
+    100: 100,
+    1000: 100,
     10000: 100,
     100000: 100,
     1000000: 10
@@ -205,14 +205,19 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
 
 
 if __name__ == '__main__':
-    # time_of_sort(insertion)
-    # time_of_sort(selection)
-    # time_of_sort(merge)
-    # time_of_sort(heap)
-    # time_of_sort(quick)
-    # time_of_sort(radix)
+    time_of_sort(insertion)
+    time_of_sort(selection)
+    time_of_sort(merge)
+    time_of_sort(heap)
     time_of_sort(quick)
-    # time_of_sort(quick, 0.9)
+
+    time_of_sort(bubble, 0.9)
+    time_of_sort(insertion, 0.9)
+    time_of_sort(selection, 0.9)
+    time_of_sort(merge, 0.9)
+    time_of_sort(heap, 0.9)
+    time_of_sort(quick, 0.9)
+
     # a = create(10)
     # print(a)
     # print(quick(a))

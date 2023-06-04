@@ -123,7 +123,9 @@ def path(labyrinth, start: str, finish: str, my_path: str) -> str:
 
 def scout(maze: np.array, start: list, finish: list):
     """Finds a way from the maze with Lee's algorithm. Returns list of coordinates from start to finish.
-    Although prints out maze with the way"""
+    Although prints out maze with the way
+
+    Maze is numpy array where -1 is wall and -2 is empty space"""
 
     # Some boundaries of the labyrinth (right and bottom)
     y_lim, x_lim = np.shape(maze)[0], np.shape(maze)[1]
