@@ -69,6 +69,7 @@ class DoublyLinkedList:
         return node
 
     def __eq__(self, other):
+        """Bruh equals"""
         return str(self) == str(other)
 
     def remove_last(self):
@@ -78,7 +79,8 @@ class DoublyLinkedList:
         return
 
     def remove_index(self, index):
-        pass
+        """Removes node by its index"""
+        self[index].prev.put_next(self[index].next)
 
     def remove(self, node_to_remove):
         """Removes first node with matching data starting from the beginning"""
@@ -160,12 +162,15 @@ class LinkedList:
 
     def __getitem__(self, index):
         """How to get the node by its index"""
+        if index not in range(0, self.__length):
+            raise IndexError
         node = self.head
         for _ in range(index):
             node = node.next
         return node
 
     def __eq__(self, other):
+        """Bruh equals"""
         return str(self) == str(other)
 
     def put(self, *node_data):
@@ -320,7 +325,8 @@ if __name__ == "__main__":
     doubly_linked.insert_last(0)
     print(f"after insert last: {doubly_linked}")
 
-    print(doubly_linked[0])
+    doubly_linked.remove_index(2)
+    print(f"after removing 2nd: {doubly_linked}")
 
     print(f"{doubly_linked.sen.prev} <-> sen <-> {doubly_linked.sen.next}")
 

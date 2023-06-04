@@ -128,9 +128,9 @@ def quick(arr: list) -> list:
     if len(arr) <= 1:
         return arr
     else:
-        pivot = arr[0]
-        left = [x for x in arr[1:] if x < pivot]
-        right = [x for x in arr[1:] if x >= pivot]
+        pivot = arr[-1]
+        left = [x for x in arr[:-1:] if x < pivot]
+        right = [x for x in arr[:-1:] if x >= pivot]
         return quick(left) + [pivot] + quick(right)
 
 
@@ -207,12 +207,13 @@ def time_of_sort(sorting_algorithm, presorted=0.0):
 if __name__ == '__main__':
     # time_of_sort(insertion)
     # time_of_sort(selection)
-    time_of_sort(merge)
-    time_of_sort(heap)
-    time_of_sort(quick)
-    # time_of_sort(radix)
+    # time_of_sort(merge)
+    # time_of_sort(heap)
     # time_of_sort(quick)
+    # time_of_sort(radix)
+    time_of_sort(quick)
     # time_of_sort(quick, 0.9)
     # a = create(10)
     # print(a)
-    # print(selection(a))
+    # print(quick(a))
+
