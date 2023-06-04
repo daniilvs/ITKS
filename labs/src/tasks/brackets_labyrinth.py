@@ -61,19 +61,20 @@ def brackets(input_text: list[str]) -> str:
     return f'{res_opening}{res_closing}'
 
 
-def path(labyrinth: np.array, start: str, finish: str, my_path: str) -> str:
-    """Tells you if you are going to find an exit from the labyrinth"""
+def path(labyrinth, start: str, finish: str, my_path: str) -> str:
+    """ЭТО НЕ ПО ЗАДАНИЮ
+    Tells you if you are going to find an exit from the labyrinth according to the path you give"""
 
     def compare(pos, lim):
         """Checks if you are going to the walls of the labyrinth"""
         if pos not in range(0, lim) or labyrinth[y_pos][x_pos] == 1:
-            return 'You are going the wrong way'
+            return "You are going the wrong way"
         elif [y_pos, x_pos] == fi:
-            return 'You found the exit'
+            return "You found the exit"
 
     # Reads your start and finish positions (as first two numbers anywhere in the string) and your route.
     # It can be written in any way you want but must contain command words like: left, l, right, r, up, u, down, d
-    reg = r"\bup\b|\bu\b|\bdown\b|\bd\b|\bleft\b|\bl\b|\bright\b|\br\b"
+    reg = r'\bup\b|\bu\b|\bdown\b|\bd\b|\bleft\b|\bl\b|\bright\b|\br\b'
     st = [int(char) for char in re.findall(r'\d+', start, re.I)[:2:]]
     fi = [int(char) for char in re.findall(r'\d+', finish, re.I)[:2:]]
     route = [char.lower() for char in re.findall(reg, my_path, re.I)]
@@ -84,9 +85,9 @@ def path(labyrinth: np.array, start: str, finish: str, my_path: str) -> str:
     # Checks if labyrinth is empty or start position is in the wall
     try:
         if labyrinth[y_pos][x_pos] == 1:
-            return 'Are you a victim of Philadelphia experiment?'
+            return "Are you a victim of Philadelphia experiment?"
     except IndexError:
-        return 'Are you even in labyrinth?'
+        return "Are you even in labyrinth?"
 
     # Some boundaries of the labyrinth (right and bottom)
     y_lim = np.shape(labyrinth)[0]
@@ -117,32 +118,109 @@ def path(labyrinth: np.array, start: str, finish: str, my_path: str) -> str:
 
     # If the whole algorithm is done, but we didn't reach the exit or the wall
     if [y_pos, x_pos] != fi:
-        return 'Where are you?'
+        return "Where are you?"
 
-def da_way(maze: np.array, start: tuple, finish: tuple):
-    pass
 
+def scout(maze: np.array, start: list, finish: list):
+    """Finds a way from the maze with Lee's algorithm. Returns list of coordinates from start to finish.
+    Although prints out maze with the way"""
+
+    # Some boundaries of the labyrinth (right and bottom)
+    y_lim, x_lim = np.shape(maze)[0], np.shape(maze)[1]
+    neighbours = [[0, -1], [-1, 0], [1, 0], [0, 1]]
+
+    # List of cells with free space
+    valid_cells = np.argwhere(maze == -2)
+
+    # Set the beginning of the wave and the starting point
+    wave = 0
+    maze[start[0]][start[1]] = 0
+
+    # Copying maze to print out result
+    res = np.copy(maze)
+
+    # Doing ~waaaves~
+    while True:
+
+        # Just in the way there is no free cell around
+        stop = True
+
+        for [y, x] in valid_cells:
+            if maze[y][x] == wave:
+                for [y_off, x_off] in neighbours:
+                    if (0 <= y + y_off < y_lim) and (0 <= x + x_off < x_lim) and (maze[y + y_off][x + x_off] == -2):
+                        maze[y + y_off][x + x_off] = wave + 1
+                        stop = False
+
+        wave += 1
+        if (maze[finish[0]][finish[1]] == -2) and not stop:
+            continue
+        elif (maze[finish[0]][finish[1]] == -2) and stop:
+            print("NO WAY")
+            return 0
+        else:
+            break
+
+    way_out = [finish, ]
+    current = finish
+
+    # Getting the way back
+    while True:
+        y = current[0]
+        x = current[1]
+
+        for [y_off, x_off] in neighbours:
+            if (0 <= y + y_off < y_lim) and (0 <= x + x_off < x_lim) and (maze[y + y_off][x + x_off] == maze[y][x] - 1):
+                current = [y + y_off, x + x_off]
+                way_out.append(current)
+                break
+        if current == start:
+            break
+        else:
+            continue
+
+    for [y, x] in way_out:
+        res[y][x] = 0
+
+    print(f"waves is\n{maze}\nres is\n{res}")
+
+    return way_out[::-1]
 
 
 if __name__ == "__main__":
     # ___________________Test for brackets()____________________
-    print("Text with parentheses: ")
-
-    my_input = sys.stdin.readlines()
-
-    print(brackets(my_input))
+    # print("Text with parentheses: ")
+    #
+    # my_input = sys.stdin.readlines()
+    #
+    # print(brackets(my_input))
 
     # ____________________Test for labyrinth_____________________
-    # laby = np.array([[1, 1, 1, 1, 0, 1],
-    #                  [1, 0, 0, 0, 0, 1],
-    #                  [1, 1, 0, 1, 0, 1],
-    #                  [1, 0, 0, 1, 1, 1],
-    #                  [1, 1, 0, 1, 1, 1]])
-    #
+    laby = np.array([[-1, -1, -1, -1, -2, -1],
+                     [-1, -2, -2, -2, -2, -1],
+                     [-1, -1, -2, -1, -2, -1],
+                     [-1, -2, -2, -1, -1, -1],
+                     [-1, -1, -2, -1, -1, -1]])
+
+    second_maze = np.array([[-1, -1, -1, -1, -1, -1, -1, -1, -1],
+                            [-1, -2, -2, -2, -2, -2, -2, -2, -1],
+                            [-1, -2, -2, -1, -1, -2, -2, -2, -1],
+                            [-1, -2, -2, -1, -1, -2, -2, -2, -1],
+                            [-1, -2, -2, -1, -1, -2, -2, -1, -1],
+                            [-1, -2, -2, -2, -2, -2, -2, -2, -1],
+                            [-1, -1, -1, -1, -1, -2, -2, -2, -1],
+                            [-1, -2, -2, -2, -1, -1, -1, -2, -2],
+                            [-1, -2, -1, -2, -2, -2, -2, -2, -2],
+                            [-1, -1, -1, -1, -1, -2, -2, -2, -2]])
+
+    starting = [0, 4]
+    finishing = [4, 2]
     # my_start = input("Your start point: ")
     # my_finish = input("Your exit from the labyrinth: ")
     # da_way = input("Your path: ")
-    #
-    # print(laby[0][4])
-    #
+
+    # scout(laby, starting, finishing)
+
+    scout(second_maze, [1, 1], [7, 2])
+
     # print(path(laby, my_start, my_finish, da_way))
