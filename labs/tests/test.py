@@ -171,6 +171,9 @@ class TestLabyrinth(unittest.TestCase):
                                  'fin is 4 2',
                                  'my way goes DOWN left l D RIGHT'), 'You are going the wrong way')
 
+    def test_scout(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
